@@ -6,10 +6,10 @@ class bcolors:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
-    BOLD = '\033[1m'
+    BOLD = '\033[1m'警告的字体
     UNDERLINE = '\033[4m'
     BBG = '\033[1;33;44m'
     PUR ='\033[1;35m'
     
-print(bcolors.PUR + "警告的字体" + bcolors.ENDC)
-print(bcolors.OKBLUE + "警告的字体" + bcolors.ENDC)
+print(bcolors.PUR + "Font sample" + bcolors.ENDC)
+print(bcolors.OKBLUE + "Font sample" + bcolors.ENDC)
