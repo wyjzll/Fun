@@ -1,0 +1,17 @@
+Created on Mon Mar 29 13:13:53 2021
+
+@author: wyj
+"""
+
+import numpy as np
+from matplotlib import pyplot as plt
+
+label = np.load("/***/_m.npy")
+label = np.argmax(label,axis=-1)
+
+for i in range(label.shape[-1]):
+    plt.figure()
+    plt.imshow(np.rot90(label[...,i]),cmap="gray",)
+    plt.show()
+    plt.clf()
+    plt.close(fig=None)
