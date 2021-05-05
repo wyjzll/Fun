@@ -12,7 +12,7 @@ from tensorflow import keras
 from sklearn.model_selection import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
-df = pd.read_csv('/home/m199315/Documents/plot_trainingResults/molecular_activity.csv')
+df = pd.read_csv('/y.csv')
 
 properties = list(df.columns.values)
 properties.remove('Activity')
