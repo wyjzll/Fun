@@ -1,8 +1,9 @@
+#读取文件夹下的文件名并保存为CSV From: https://www.jianshu.com/p/393f116b0d68
 import os
 import csv
 import re
 root_path = 'F:\\BaiduNetdiskDownload\\mini_Imagenet\\dataset\\train'
-#读取文件夹下的文件名并保存为CSV
+
 #
 # # 将所有目录下的文件信息放到列表中
 def get_Write_file_infos(path):
