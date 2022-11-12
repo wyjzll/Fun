@@ -1,0 +1,65 @@
+python使用nibabel和sitk读取保存nii.gz文件实例
+nii.gz格式是医学图像常用的压缩格式，python中可用nibabel和sitk来读取保存。
+
+使用nibabel
+
+由于使用nibabel图像会旋转90度，所以读取保存的时候还得保存映射信息，3维图像格式为（z, y, x）
+
+读取nii.gz文件
+
+img = nib.load('xxxxx.nii.gz')
+img_affine = img.affine
+img = img.get_data()
+保存nii.gz文件
+
+nib.Nifti1Image(img,img_affine).to_filename('xxxxx.nii.gz')
+
+使用sitk
+
+使用sitk读取nii时，读取出来的还是图片格式，可以使用他自带的函数进行处理，不过速度比较慢，建议使用GetArrayFromImage转换成numpy格式再处理，3维图像格式为（x, y, z）
+
+读取nii.gz文件
+
+img = sitk.ReadImage('xxxxx.nii.gz')
+
+img = sitk.GetArrayFromImage(img)
+
+保存nii.gz文件
+
+out = sitk.GetImageFromArray(img)
+
+sitk.WriteImage(out,'xxxxx.nii.gz')
+
+在numpy数组和nibabel或sitk中相互转换时，要注意数据的格式，一般保存为int或uint类型。比如输入nii为16位有符号整型时，我们可能需要转换成0~255灰度图，可用如下代码：
+
+img = sitk.ReadImage('xxxxx.nii.gz')
+img = sitk.Cast(sitk.RescaleIntensity(img),sitk.sitkUInt8)
+img = sitk.GetArrayFromImage(img)
+补充知识：SimpleITK保存Nii文件与错误处理方式
+
+Reason:
+
+把处理好的分割结果保存为nii文件，用ITKsnap读取时出现了如下错误。
+
+python使用nibabel和sitk读取保存nii.gz文件实例
+
+SimpleITK读取和保存Nii文件
+
+1. 读取
+
+import SimpleITK as sitk
+filename = './xxx.nii'
+ct = sitk.ReadImage(filename)
+ct_array = sitk.GetArrayFromImage(ct)
+
+origin =ct.GetOrigin()
+direction = ct.GetDirection()
+space = ct.GetSpacing()
+2. 保存
+
+savedImg = sitk.GetImageFromArray(ct_array)
+savedImg.SetOrigin(origin)
+savedImg.SetDirection(direction)
+savedImg.SetSpacing(space)
+sitk.WriteImage(savedImg, saved_name)
+Note：被保存的ct_array数组一定是ndarray，float类型的才能被ITKsnap正确读取，如果是int类型的，就会出现上图中的错误。
