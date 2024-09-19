@@ -1,0 +1,36 @@
+import SimpleITK as sitk
+import nibabel as nib
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+import os
+# import pydicom
+# from nibabel import orientations as orx
+
+# read image
+mean_volume={}
+for roots, dirs, files in os.walk(inputDir):
+    # for each in tqdm(os.listdir(path0)): 
+    for file in files:
+        if file.endswith(".nii.gz"):
+            volume_object_ml=0
+            im = sitk.ReadImage(os.path.join(inputDir, file))
+
+    # get voxel spacing (for 3-D image)
+            spacing = im.GetSpacing()
+            spacing_x = spacing[0]
+            spacing_y = spacing[1]
+            spacing_z = spacing[2]
+            # image_nda = sitk.GetArrayFromImage(im)
+    # determine volume of a single voxel
+            voxel_volume = spacing_x * spacing_y * spacing_z
+            image_nda = sitk.GetArrayFromImage(im)
+            imageSegm_nda_NonZero = image_nda.nonzero()       
+            num_voxels = len(list(zip(imageSegm_nda_NonZero[0],imageSegm_nda_NonZero[1], imageSegm_nda_NonZero[2])))
+            volume_object_ml = (num_voxels * spacing_x * spacing_y * spacing_z) / 1000
+            # print(f'the volume of {file} is {volume_object_ml}')
+            mean_volume[file]=volume_object_ml
+            print(f"{file}: voxel_volume={voxel_volume}, num_voxels={num_voxels},volume={volume_object_ml}")
+            len(mean_volume)
+        else:
+            continue
